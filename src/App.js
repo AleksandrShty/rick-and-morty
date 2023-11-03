@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { Layout, Typography, Divider, Row } from 'antd';
+import {makeRequest, reqAllCharacters} from '../src/service/service'
+import styles from './App.module.css';
 
-function App() {
+const { Header } = Layout;
+const { Title } = Typography;
+
+const App = () => {
+  const getAllCharacters = async () => {
+    return await makeRequest(reqAllCharacters).then(({data}) => data.characters.results);
+  }
+
+  const cards = getAllCharacters()
+
+  console.log(cards)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout className={styles.layoutOuter}>
+      <Layout className={styles.layoutInner}>
+        <Header className={styles.header}>
+          <Title className={styles.title}>Rick and Morty Characters</Title>
+        </Header>
+
+        <Divider />
+
+        <Row justify="center">
+          
+        </Row>
+      </Layout>
+    </Layout>
   );
 }
 
