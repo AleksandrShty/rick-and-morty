@@ -1,18 +1,24 @@
-import { Layout, Typography, Divider, Row } from 'antd';
-import {makeRequest, reqAllCharacters} from '../src/service/service'
-import styles from './App.module.css';
+import { Layout, Typography, Divider, Row } from 'antd'
+import { makeRequest } from './api/requests'
+import { reqAllCharacters } from './api/queries'
+import styles from './App.module.css'
+import { useEffect } from 'react'
 
-const { Header } = Layout;
-const { Title } = Typography;
+const { Header } = Layout
+const { Title } = Typography
 
 const App = () => {
   const getAllCharacters = async () => {
-    return await makeRequest(reqAllCharacters).then(({data}) => data.characters.results);
+    return await makeRequest(reqAllCharacters)
+      .then(({ data }) => data.characters.results)
+      .catch((error) => {
+        console.error('Error:', error)
+      })
   }
 
-  const cards = getAllCharacters()
-
-  console.log(cards)
+  useEffect(() => {
+    getAllCharacters()
+  }, [])
 
   return (
     <Layout className={styles.layoutOuter}>
@@ -23,12 +29,10 @@ const App = () => {
 
         <Divider />
 
-        <Row justify="center">
-          
-        </Row>
+        <Row justify="center"></Row>
       </Layout>
     </Layout>
-  );
+  )
 }
 
-export default App;
+export default App
