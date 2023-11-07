@@ -9,7 +9,7 @@ const { Header } = Layout
 const { Title } = Typography
 
 const App = () => {
-  const [cards, setCards] = useState()
+  const [cards, setCards] = useState([])
 
   const deleteCard = (id) => {
     setCards((cards) => cards.filter(item => item.id !== id))
@@ -29,8 +29,6 @@ const App = () => {
     })()
   }, [])
 
-  console.log(cards)
-
   return (
     <Layout className={styles.layoutOuter}>
       <Layout className={styles.layoutInner}>
@@ -41,8 +39,7 @@ const App = () => {
         <Divider />
 
         <Row className={styles.gridLayout} justify="center" gutter={[20, 20]}>
-          {cards &&
-            cards.map((item) => {
+          {cards.map((item) => {
               return (
                 <Col key={item.id} xs={24} sm={24} md={12} lg={8} xl={6}>
                   <CardItem data={item} deleteCard={deleteCard} />
