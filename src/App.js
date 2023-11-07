@@ -1,19 +1,42 @@
 import { useState, useEffect } from 'react'
-import { Layout, Typography, Divider } from 'antd'
+import { Layout, Typography, Divider, Button } from 'antd'
 import { makeRequest } from './api/requests'
 import { reqAllCharacters } from './api/queries'
 import Grid from './components/Grid/Grid'
+import { useDispatch, useSelector } from 'react-redux'
 import styles from './App.module.css'
 
 const { Header } = Layout
 const { Title } = Typography
 
 const App = () => {
-  const [cards, setCards] = useState([])
+  const [characters, setCharacters] = useState([])
+  const dispatch = useDispatch()
+  const likes = useSelector((state) => state.likedCards)
+  const cards = useSelector((state) => state.cards)
+  const [stateSort, setStateSort] = useState(false)
 
-  const deleteCard = (id) => {
-    setCards((cards) => cards.filter((item) => item.id !== id))
+  const likeCard = (id) => {
+    dispatch({ type: 'ADD_LIKE', payload: id })
   }
+
+  const removeLikeCard = (id) => {
+    dispatch({ type: 'REMOVE_LIKE', payload: id })
+  }
+
+  // const deleteCard = (id) => {
+  //   setCards((cards) => cards.filter((item) => item.id !== id))
+  // }
+
+  // const sortLiked = () => {
+  //   if (!stateSort) {
+  //     setStateSort(true)
+  //     setCards(cards.filter((card) => likes.includes(card.id)))
+  //   } else {
+  //     setStateSort(false)
+  //     setCards(cards)
+  //   }
+  // }
 
   const getAllCharacters = async () => {
     return await makeRequest(reqAllCharacters)
@@ -25,8 +48,9 @@ const App = () => {
 
   useEffect(() => {
     (async () => {
-      setCards(await getAllCharacters())
+      setCharacters(await getAllCharacters())
     })()
+    dispatch({ type: 'ADD_CARDS', payload: characters })
   }, [])
 
   return (
@@ -38,7 +62,16 @@ const App = () => {
 
         <Divider />
 
-        <Grid cards={cards} deleteCard={deleteCard} />
+        <div className={styles.sortBtnWrapper}>
+          <Button type="primary">All cards</Button>
+        </div>
+
+        <Grid
+          cards={cards}
+          // deleteCard={deleteCard}
+          likeCard={likeCard}
+          removeLikeCard={removeLikeCard}
+        />
       </Layout>
     </Layout>
   )

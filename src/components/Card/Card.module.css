@@ -14,3 +14,8 @@
   font-weight: 600;
   font-size: 14px;
 }
+
+.filledHeart {
+  color: white;
+  background-color: red;
+}
