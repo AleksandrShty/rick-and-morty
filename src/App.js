@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import { Layout, Typography, Divider, Row, Col } from 'antd'
+import { Layout, Typography, Divider } from 'antd'
 import { makeRequest } from './api/requests'
 import { reqAllCharacters } from './api/queries'
-import CardItem from './components/Card/Card'
+import Grid from './components/Grid/Grid'
 import styles from './App.module.css'
 
 const { Header } = Layout
@@ -12,7 +12,7 @@ const App = () => {
   const [cards, setCards] = useState([])
 
   const deleteCard = (id) => {
-    setCards((cards) => cards.filter(item => item.id !== id))
+    setCards((cards) => cards.filter((item) => item.id !== id))
   }
 
   const getAllCharacters = async () => {
@@ -38,16 +38,7 @@ const App = () => {
 
         <Divider />
 
-        <Row className={styles.gridLayout} justify="center" gutter={[20, 20]}>
-          {cards.map((item) => {
-              return (
-                <Col key={item.id} xs={24} sm={24} md={12} lg={8} xl={6}>
-                  <CardItem data={item} deleteCard={deleteCard} />
-                </Col>
-              )
-            })
-          }
-        </Row>
+        <Grid cards={cards} deleteCard={deleteCard} />
       </Layout>
     </Layout>
   )

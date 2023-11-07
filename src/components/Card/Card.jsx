@@ -15,7 +15,7 @@ const CardItem = ({ data, deleteCard }) => (
     bodyStyle={stylesCard.bodyStyle}
     headStyle={stylesCard.headStyle}
   >
-    <Space direction={'vertical'}>
+    <Space direction='vertical'>
       <Image width={200} src={data.image} />
 
       <div className={styles.cardBottomWrapper}>
