@@ -1,13 +1,20 @@
-import { Layout, Typography, Divider, Row } from 'antd'
+import { useState, useEffect } from 'react'
+import { Layout, Typography, Divider, Row, Col } from 'antd'
 import { makeRequest } from './api/requests'
 import { reqAllCharacters } from './api/queries'
+import CardItem from './components/Card/Card'
 import styles from './App.module.css'
-import { useEffect } from 'react'
 
 const { Header } = Layout
 const { Title } = Typography
 
 const App = () => {
+  const [cards, setCards] = useState()
+
+  const deleteCard = (id) => {
+    setCards((cards) => cards.filter(item => item.id !== id))
+  }
+
   const getAllCharacters = async () => {
     return await makeRequest(reqAllCharacters)
       .then(({ data }) => data.characters.results)
@@ -17,8 +24,12 @@ const App = () => {
   }
 
   useEffect(() => {
-    getAllCharacters()
+    (async () => {
+      setCards(await getAllCharacters())
+    })()
   }, [])
+
+  console.log(cards)
 
   return (
     <Layout className={styles.layoutOuter}>
@@ -29,7 +40,17 @@ const App = () => {
 
         <Divider />
 
-        <Row justify="center"></Row>
+        <Row className={styles.gridLayout} justify="center" gutter={[20, 20]}>
+          {cards &&
+            cards.map((item) => {
+              return (
+                <Col key={item.id} xs={24} sm={24} md={12} lg={8} xl={6}>
+                  <CardItem data={item} deleteCard={deleteCard} />
+                </Col>
+              )
+            })
+          }
+        </Row>
       </Layout>
     </Layout>
   )

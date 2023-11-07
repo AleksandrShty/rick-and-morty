@@ -1,0 +1,16 @@
+.card {
+  box-shadow: 0 5px 10px 2px rgba(34, 60, 80, 0.2);
+  border-radius: 30px;
+}
+
+.cardBottomWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.info {
+  font-weight: 600;
+  font-size: 14px;
+}
