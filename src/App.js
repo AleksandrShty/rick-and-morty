@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Layout, Typography, Divider, Button } from 'antd'
-import { makeRequest } from './api/requests'
-import { reqAllCharacters } from './api/queries'
 import Grid from './components/Grid/Grid'
 import { useDispatch, useSelector } from 'react-redux'
+import { fetchCards } from './asyncActions/cards'
 import styles from './App.module.css'
 
 const { Header } = Layout
@@ -15,7 +14,7 @@ const App = () => {
   const likes = useSelector((state) => state.likedCards)
   const cards = useSelector((state) => state.cards)
   const [stateSort, setStateSort] = useState(false)
-
+  
   const likeCard = (id) => {
     dispatch({ type: 'ADD_LIKE', payload: id })
   }
@@ -38,20 +37,19 @@ const App = () => {
   //   }
   // }
 
-  const getAllCharacters = async () => {
-    return await makeRequest(reqAllCharacters)
-      .then(({ data }) => data.characters.results)
-      .catch((error) => {
-        console.error('Error:', error)
-      })
-  }
+  // const getAllCharacters = async () => {
+  //   return await makeRequest(reqAllCharacters)
+  //     .then(({ data }) => data.characters.results)
+  //     .catch((error) => {
+  //       console.error('Error:', error)
+  //     })
+  // }
 
   useEffect(() => {
-    (async () => {
-      setCharacters(await getAllCharacters())
-    })()
-    dispatch({ type: 'ADD_CARDS', payload: characters })
+    dispatch(fetchCards())
   }, [])
+
+  console.log(cards, 'cards')
 
   return (
     <Layout className={styles.layoutOuter}>
