@@ -7,7 +7,7 @@ import styles from '../Card/Card.module.css'
 import { stylesCard } from './styles'
 
 const CardItem = ({ data, deleteCard, likeCard, removeLikeCard }) => {
-  const likes = useSelector((state) => state.likedCards)
+  const likes = useSelector((state) => state.likes.likedCards)
 
   return (
     <Card
@@ -32,7 +32,6 @@ const CardItem = ({ data, deleteCard, likeCard, removeLikeCard }) => {
                 ? () => removeLikeCard(data.id)
                 : () => likeCard(data.id)
             }
-            // onClick={() => likeCard(data.id)}
             className={likes?.includes(data.id) ? styles.filledHeart : null}
           >
             <HeartOutlined />

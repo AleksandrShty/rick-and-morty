@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { Layout, Typography, Divider, Button } from 'antd'
-import Grid from './components/Grid/Grid'
+import Grid from '../Grid/Grid'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchCards } from './asyncActions/cards'
-import { deleteCardById } from './actions/cards'
-import { addLike, removeLike } from './actions/likes'
+import { fetchCards } from '../../asyncActions/cards'
+import { deleteCardById } from '../../actions/cards'
+import { addLike, removeLike } from '../../actions/likes'
 import styles from './App.module.css'
 
 const { Header } = Layout
@@ -12,17 +12,15 @@ const { Title } = Typography
 
 const App = () => {
   const dispatch = useDispatch()
-  const likes = useSelector((state) => state.likedCards)
+  const likes = useSelector((state) => state.likes.likedCards)
   const cards = useSelector((state) => state.cards.cards)
   const [stateSort, setStateSort] = useState(false)
   
   const likeCard = (id) => {
-    console.log(likes, 'likes')
     dispatch(addLike(id))
   }
 
   const removeLikeCard = (id) => {
-    console.log(likes, 'likes')
     dispatch(removeLike(id))
   }
 
@@ -30,15 +28,15 @@ const App = () => {
     dispatch(deleteCardById(id))
   }
 
-  // const sortLiked = () => {
-  //   if (!stateSort) {
-  //     setStateSort(true)
-  //     setCards(cards.filter((card) => likes.includes(card.id)))
-  //   } else {
-  //     setStateSort(false)
-  //     setCards(cards)
-  //   }
-  // }
+  const sortLiked = () => {
+    if (!stateSort) {
+      setStateSort(true)
+    } else {
+      setStateSort(false)
+    }
+  }
+
+  const filteredCards = cards.filter(card => likes.includes(card.id))
 
   useEffect(() => {
     dispatch(fetchCards())
@@ -54,11 +52,11 @@ const App = () => {
         <Divider />
 
         <div className={styles.sortBtnWrapper}>
-          <Button type="primary">All cards</Button>
+          <Button onClick={sortLiked} type="primary">{stateSort ? 'Liked cards' : 'All cards'}</Button>
         </div>
 
         <Grid
-          cards={cards}
+          cards={stateSort ? filteredCards : cards}
           deleteCard={deleteCard}
           likeCard={likeCard}
           removeLikeCard={removeLikeCard}
