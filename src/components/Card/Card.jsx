@@ -28,11 +28,12 @@ const CardItem = ({ data, deleteCard, likeCard, removeLikeCard }) => {
 
           <Button
             onClick={
-              likes.includes(data.id)
+              likes?.includes(data.id)
                 ? () => removeLikeCard(data.id)
                 : () => likeCard(data.id)
             }
-            className={likes.includes(data.id) ? styles.filledHeart : null}
+            // onClick={() => likeCard(data.id)}
+            className={likes?.includes(data.id) ? styles.filledHeart : null}
           >
             <HeartOutlined />
           </Button>

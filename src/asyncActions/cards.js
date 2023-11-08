@@ -1,18 +1,10 @@
-import { makeRequest } from '../api/requests'
-import { reqAllCharacters } from '../api/queries'
-
-const getAllCharacters = async () => {
-  return await makeRequest(reqAllCharacters)
-    .then(({ data }) => data?.characters?.results)
-    .catch((error) => {
-      console.error('Error:', error)
-    })
-}
+import { getAllCharacters } from '../api/allCharacters'
+import { getAllCards } from '../actions/cards'
 
 export const fetchCards = () => {
   return function (dispatch) {
-    getAllCharacters().then(json => 
-      dispatch({ type: 'ADD_CARDS', payload: json }),
-    )
+    getAllCharacters()
+      .then((json) => dispatch(getAllCards(json)))
+      .catch((error) => console.log('Error:', error))
   }
 }

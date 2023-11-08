@@ -3,29 +3,32 @@ import { Layout, Typography, Divider, Button } from 'antd'
 import Grid from './components/Grid/Grid'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchCards } from './asyncActions/cards'
+import { deleteCardById } from './actions/cards'
+import { addLike, removeLike } from './actions/likes'
 import styles from './App.module.css'
 
 const { Header } = Layout
 const { Title } = Typography
 
 const App = () => {
-  const [characters, setCharacters] = useState([])
   const dispatch = useDispatch()
   const likes = useSelector((state) => state.likedCards)
-  const cards = useSelector((state) => state.cards)
+  const cards = useSelector((state) => state.cards.cards)
   const [stateSort, setStateSort] = useState(false)
   
   const likeCard = (id) => {
-    dispatch({ type: 'ADD_LIKE', payload: id })
+    console.log(likes, 'likes')
+    dispatch(addLike(id))
   }
 
   const removeLikeCard = (id) => {
-    dispatch({ type: 'REMOVE_LIKE', payload: id })
+    console.log(likes, 'likes')
+    dispatch(removeLike(id))
   }
 
-  // const deleteCard = (id) => {
-  //   setCards((cards) => cards.filter((item) => item.id !== id))
-  // }
+  const deleteCard = (id) => {
+    dispatch(deleteCardById(id))
+  }
 
   // const sortLiked = () => {
   //   if (!stateSort) {
@@ -37,19 +40,9 @@ const App = () => {
   //   }
   // }
 
-  // const getAllCharacters = async () => {
-  //   return await makeRequest(reqAllCharacters)
-  //     .then(({ data }) => data.characters.results)
-  //     .catch((error) => {
-  //       console.error('Error:', error)
-  //     })
-  // }
-
   useEffect(() => {
     dispatch(fetchCards())
-  }, [])
-
-  console.log(cards, 'cards')
+  }, []) 
 
   return (
     <Layout className={styles.layoutOuter}>
@@ -66,7 +59,7 @@ const App = () => {
 
         <Grid
           cards={cards}
-          // deleteCard={deleteCard}
+          deleteCard={deleteCard}
           likeCard={likeCard}
           removeLikeCard={removeLikeCard}
         />
