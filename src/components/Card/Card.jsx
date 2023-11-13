@@ -2,18 +2,25 @@ import React from 'react'
 import { Button, Card, Image, Space } from 'antd'
 import { HeartOutlined } from '@ant-design/icons'
 import CloseBtn from '../CloseBtn/CloseBtn'
-import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { addLike, removeLike } from '../../actions/likes'
 import styles from '../Card/Card.module.css'
 import { stylesCard } from './styles'
 
-const CardItem = ({ data, deleteCard, likeCard, removeLikeCard }) => {
-  const likes = useSelector((state) => state.likes.likedCards)
+const CardItem = ({ data, likes }) => {
+  const dispatch = useDispatch()
+
+  const toggleLike = () => {
+    likes?.includes(data.id)
+      ? dispatch(removeLike(data.id))
+      : dispatch(addLike(data.id))
+  }
 
   return (
     <Card
       className={styles.card}
       title={data.name}
-      extra={<CloseBtn id={data.id} deleteCard={deleteCard} />}
+      extra={<CloseBtn id={data.id} />}
       bodyStyle={stylesCard.bodyStyle}
       headStyle={stylesCard.headStyle}
     >
@@ -27,11 +34,7 @@ const CardItem = ({ data, deleteCard, likeCard, removeLikeCard }) => {
           </div>
 
           <Button
-            onClick={
-              likes?.includes(data.id)
-                ? () => removeLikeCard(data.id)
-                : () => likeCard(data.id)
-            }
+            onClick={toggleLike}
             className={likes?.includes(data.id) ? styles.filledHeart : null}
           >
             <HeartOutlined />
