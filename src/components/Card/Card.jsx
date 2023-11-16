@@ -11,6 +11,7 @@ const CardItem = ({ data, likes }) => {
   const dispatch = useDispatch()
 
   const toggleLike = () => {
+    JSON.parse(localStorage.getItem('likes'))?.includes(data.id) ||
     likes?.includes(data.id)
       ? dispatch(removeLike(data.id))
       : dispatch(addLike(data.id))
@@ -35,7 +36,12 @@ const CardItem = ({ data, likes }) => {
 
           <Button
             onClick={toggleLike}
-            className={likes?.includes(data.id) ? styles.filledHeart : null}
+            className={
+              JSON.parse(localStorage.getItem('likes'))?.includes(data.id) ||
+              likes?.includes(data.id)
+                ? styles.filledHeart
+                : null
+            }
           >
             <HeartOutlined />
           </Button>

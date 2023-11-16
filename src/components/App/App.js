@@ -23,13 +23,20 @@ const App = () => {
   }
 
   const filteredCards = useMemo(() => {
-    const filteredArr = cards.filter(card => likes.includes(card.id))
-    return filteredArr.length > 0 ? filteredArr : 'Список пуст'
+    const filteredArr = cards.filter(
+      (card) =>
+        JSON.parse(localStorage.getItem('likes'))?.includes(card.id) ||
+        likes.includes(card.id),
+    )
+    return JSON.parse(localStorage.getItem('likes'))?.length > 0 ||
+      filteredArr.length > 0
+      ? filteredArr
+      : 'Список пуст'
   }, [isFilter, cards])
 
   useEffect(() => {
     dispatch(fetchCards())
-  }, []) 
+  }, [])
 
   return (
     <Layout className={styles.layoutOuter}>
@@ -41,13 +48,12 @@ const App = () => {
         <Divider />
 
         <div className={styles.sortBtnWrapper}>
-          <Button onClick={filterLiked} type="primary">{isFilter ? 'Liked cards' : 'All cards'}</Button>
+          <Button onClick={filterLiked} type="primary">
+            {isFilter ? 'Liked cards' : 'All cards'}
+          </Button>
         </div>
 
-        <Grid
-          cards={isFilter ? filteredCards : cards}
-          likes={likes}
-        />
+        <Grid cards={isFilter ? filteredCards : cards} likes={likes} />
       </Layout>
     </Layout>
   )
