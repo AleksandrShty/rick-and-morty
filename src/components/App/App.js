@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { Layout, Typography, Divider, Button } from 'antd'
 import Grid from '../Grid/Grid'
 import { useDispatch, useSelector } from 'react-redux'
+import { LIKES_FROM_LOCALSTORAGE } from '../../constants/constants'
 import { fetchCards } from '../../asyncActions/cards'
 import styles from './App.module.css'
 
@@ -25,10 +26,10 @@ const App = () => {
   const filteredCards = useMemo(() => {
     const filteredArr = cards.filter(
       (card) =>
-        JSON.parse(localStorage.getItem('likes'))?.includes(card.id) ||
+      LIKES_FROM_LOCALSTORAGE?.includes(card.id) ||
         likes.includes(card.id),
     )
-    return JSON.parse(localStorage.getItem('likes'))?.length > 0 ||
+    return LIKES_FROM_LOCALSTORAGE?.length > 0 ||
       filteredArr.length > 0
       ? filteredArr
       : 'Список пуст'

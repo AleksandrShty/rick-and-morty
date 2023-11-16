@@ -3,6 +3,7 @@ import { Button, Card, Image, Space } from 'antd'
 import { HeartOutlined } from '@ant-design/icons'
 import CloseBtn from '../CloseBtn/CloseBtn'
 import { useDispatch } from 'react-redux'
+import { LIKES_FROM_LOCALSTORAGE } from '../../constants/constants'
 import { addLike, removeLike } from '../../actions/likes'
 import styles from '../Card/Card.module.css'
 import { stylesCard } from './styles'
@@ -11,7 +12,7 @@ const CardItem = ({ data, likes }) => {
   const dispatch = useDispatch()
 
   const toggleLike = () => {
-    JSON.parse(localStorage.getItem('likes'))?.includes(data.id) ||
+    LIKES_FROM_LOCALSTORAGE?.includes(data.id) ||
     likes?.includes(data.id)
       ? dispatch(removeLike(data.id))
       : dispatch(addLike(data.id))

@@ -1,0 +1,1 @@
+export const LIKES_FROM_LOCALSTORAGE = JSON.parse(localStorage.getItem('likes'))
