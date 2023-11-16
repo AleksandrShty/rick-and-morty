@@ -67,4 +67,13 @@
   font-weight: 900 !important;
   margin: 0;
   padding: 50px 0 30px;
+
+  @media (max-width: 780px) {
+    font-size: 30px !important;
+  }
+}
+
+.sortBtnWrapper {
+  display: flex;
+  justify-content: center;
 }
